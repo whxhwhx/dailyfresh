@@ -3,10 +3,11 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseRedirect
 from hashlib import sha1
 from models import *
+from . import user_decorator
 
 
 def register(request):
-    context = {'title': '注册'}
+    context = {'title': '注册', 'mp': 'no-mp'}
     return render(request, 'df_user/register.html', context)
 
 
@@ -47,7 +48,8 @@ def register_exist(request):
 def login(request):
     # 看看cookie有没有保存着用户名, cookie会随着http请求发送过来,所以在request里面取
     uname = request.COOKIES.get('uname', '')
-    context = {'title': '登录', 'name_error': 0, 'pwd_error': 0, 'uname': uname}
+    context = {'title': '登录', 'name_error': 0, 'pwd_error': 0, 'uname': uname,
+               'mp': 'no-mp'}
     return render(request, 'df_user/login.html', context)
 
 
@@ -67,8 +69,9 @@ def login_handle(request):
         s1 = sha1()
         s1.update(upwd)
         if s1.hexdigest() == user[0].upwd:
-            # 正确,转到用户中心, 注意--> 因为我们要设置cookie,即还要读返回对象进行操作,redirect不行,所以不用redirect
-            red = HttpResponseRedirect('/user/info/')
+            # 正确,转到原本想去的页面, 从cookie拿,如果没有,就去首页吧,注意--> 因为我们要设置cookie,即还要读返回对象进行操作,redirect不行,所以不用redirect
+            url = request.COOKIES.get('url', '/')
+            red = HttpResponseRedirect(url)
             # 判断用户是否勾选了记住用户名
             if remember != 0:
                 # 设置cookie
@@ -90,6 +93,7 @@ def login_handle(request):
         return render(request, 'df_user/login.html', context)
 
 
+@user_decorator.login
 def info(request):
     # 已经能保证数据存在了, 直接用get即可,不用担心抛异常
     uphone = UserInfo.objects.get(id=request.session['user_id']).uphone
@@ -99,15 +103,17 @@ def info(request):
         uphone = '未填写'
     if uaddress == '':
         uaddress = '未填写'
-    context = {'title': '用户中心', 'uname': uname, 'uphone': uphone, 'uaddress': uaddress}
+    context = {'title': '用户中心', 'page_name': 1, 'uname': uname, 'uphone': uphone, 'uaddress': uaddress}
     return render(request, 'df_user/user_center_info.html', context)
 
 
+@user_decorator.login
 def order(request):
-    context = {'title': '用户中心'}
-    return render(request, 'df_user/user_center_order.html',)
+    context = {'title': '用户中心', 'page_name': 1}
+    return render(request, 'df_user/user_center_order.html', context)
 
 
+@user_decorator.login
 def site(request):
     user = UserInfo.objects.get(id=request.session['user_id'])
     if request.method == 'POST':
@@ -124,7 +130,7 @@ def site(request):
     uyoubian = user.uyoubian
     if uaddress == '':
         uaddress = '未填写'
-    context = {'title': '用户中心', 'uaddress': uaddress, 'ushou': ushou, 'uyoubian': uyoubian, 'uphone': uphone}
+    context = {'title': '用户中心', 'page_name': 1, 'uaddress': uaddress, 'ushou': ushou, 'uyoubian': uyoubian, 'uphone': uphone}
 
     return render(request, 'df_user/user_center_site.html', context)
 
