@@ -4,6 +4,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from hashlib import sha1
 from models import *
 from . import user_decorator
+from df_goods.models import *
 
 
 def register(request):
@@ -103,7 +104,20 @@ def info(request):
         uphone = '未填写'
     if uaddress == '':
         uaddress = '未填写'
-    context = {'title': '用户中心', 'page_name': 1, 'uname': uname, 'uphone': uphone, 'uaddress': uaddress}
+
+    # 读取cookie里面存放的最近浏览商品的id
+    good_ids = request.COOKIES.get('good_ids', '')
+    good_ids_list = good_ids.split(',')
+    good_list = []
+    if good_ids_list != ['']:
+        for good_id in good_ids_list:
+            good_list.append(GoodsInfo.objects.get(id=int(good_id)))
+        flag = 1
+    else:
+        flag = 0
+
+    context = {'title': '用户中心', 'page_name': 1, 'uname': uname, 'uphone': uphone, 'uaddress': uaddress,
+               'good_list': good_list, 'flag': flag}
     return render(request, 'df_user/user_center_info.html', context)
 
 
@@ -134,3 +148,7 @@ def site(request):
 
     return render(request, 'df_user/user_center_site.html', context)
 
+
+def logout(request):
+    request.session.flush()
+    return redirect('/')
