@@ -91,6 +91,7 @@
 			</div>
 
 		</div>
+		<div class="add_jump"></div>>
 	</div>
 {%endblock innermost%}
 
@@ -105,16 +106,27 @@
 
 		$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
 		$('#add_cart').click(function(){
+			// ajax的局部更新并不会使装饰器生效，本地判断一下
+			if($('.login_btn').text().indexOf('登录')>=0){
+				alert('请先登录');
+				location.href = '/user/login/'
+				return;
+			}
+			//动画部分
 			$(".add_jump").stop().animate({
 				'left': $to_y+7,
 				'top': $to_x+7},
 				"fast", function() {
-					$(".add_jump").fadeOut('fast',function(){
-						$('#show_count').html(2);
-					});
+					$(".add_jump").fadeOut('fast',function(){});
 
 			});
-		})
+
+			//ajax部分
+			num = parseInt($('.num_show').val());
+			$.get('/cart/add{{good.id}}_'+num+'/', function(data){
+				$('#show_count').text(data.count);
+			});
+		});
 	</script>
 
 {%endblock tail%}
