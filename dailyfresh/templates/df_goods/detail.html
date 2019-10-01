@@ -98,14 +98,16 @@
 {%block tail%}
 
 	<script type="text/javascript">
-		var $add_x = $('#add_cart').offset().top;
-		var $add_y = $('#add_cart').offset().left;
 
 		var $to_x = $('#show_count').offset().top;
 		var $to_y = $('#show_count').offset().left;
 
-		$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
 		$('#add_cart').click(function(){
+			// 点击后重新读取，让动画能重复
+			var $add_x = $('#add_cart').offset().top;
+			var $add_y = $('#add_cart').offset().left;
+			$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
+
 			// ajax的局部更新并不会使装饰器生效，本地判断一下
 			if($('.login_btn').text().indexOf('登录')>=0){
 				alert('请先登录');

@@ -49,3 +49,20 @@ def delete(request, cart_id):
     except Exception as e:
         data = {'ok': 0}
     return JsonResponse(data)
+
+
+@user_decorator.login
+def edit(request, gid, count):
+    # 我们要拿到用户x买了y商品,用户， 就用session的user_id来解决， 商品，传过来id就行, 买了多少份，就用count
+    uid = request.session['user_id']
+    gid = int(gid)
+    count = int(count)
+
+    # 然后就可以查询数据库的值了，没有没关系，用filter，空的不会报错，只会返回空列表
+    carts = CartInfo.objects.filter(user_id=uid, goods_id=gid)
+    if len(carts) >= 1:
+         cart = carts[0]
+         cart.count = count
+    cart.save()
+
+    return JsonResponse({'number': cart.count})

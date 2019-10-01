@@ -152,3 +152,4 @@ def site(request):
 def logout(request):
     request.session.flush()
     return redirect('/')
+

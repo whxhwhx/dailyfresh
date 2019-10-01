@@ -109,3 +109,4 @@ def detail(request, id):
     # 写入cookie
     response.set_cookie('good_ids', good_ids)
     return response
+
