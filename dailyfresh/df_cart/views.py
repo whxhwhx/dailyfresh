@@ -1,5 +1,5 @@
 # coding:utf-8
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from df_user import user_decorator
 from models import CartInfo
 from django.http import JsonResponse
@@ -8,7 +8,7 @@ from django.http import JsonResponse
 @user_decorator.login
 def cart(request):
     uid = request.session['user_id']
-    carts = CartInfo.objects.filter(user_id=uid)
+    carts = CartInfo.objects.filter(user_id=uid).order_by('-id')
     context = {'title': '购物车', 'page_name': 1, 'carts': carts}
     return render(request, 'df_cart/cart.html', context)
 
@@ -36,8 +36,12 @@ def add(request, gid, minus, count):
         cart.count = count
     cart.save()
 
-    count = CartInfo.objects.filter(user_id=request.session['user_id']).count()
-    return JsonResponse({'count': count, 'number': cart.count})
+    if request.is_ajax():
+        count = CartInfo.objects.filter(user_id=request.session['user_id']).count()
+        return JsonResponse({'count': count, 'number': cart.count})
+    else:
+        return redirect('/cart/')
+
 
 
 @user_decorator.login
