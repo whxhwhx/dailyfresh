@@ -27,7 +27,7 @@
 			price = $(this).prev().prev().text();
 			// 小计total0
 			total0 = parseFloat(count) * parseFloat(price);
-			$(this).text(total0.toFixed(2));
+			$(this).text('￥'+total0.toFixed(2));
 
 			// 勾选上了，才会计入总计
 			if($(this).parent().children(':first').find('input').prop('checked')){
@@ -111,9 +111,27 @@
 
 		});
 
-
+		$('#order').click(function(){
+			len = $(':checked:not(#check_all)').length;
+			if(len == 0){
+				alert('请选择商品')
+			}else{
+				var address = '/order/?';
+				$(':checked:not(#check_all)').each(function(i){
+					id = $(this).parents('.cart_list_td').prop('id');
+					if(i+1 >= len){
+						entire = 'card_id='+id;
+					}else{
+						entire = 'card_id='+id + '&';
+					}
+					address = address+entire;
+				});
+				$(this).prop('href', address);
+			}
+		});
 
 	});
+
 </script>
 {%endblock head%}
 {%block inner_body%}
@@ -140,18 +158,17 @@
 				<a href="javascript:;" name="{{c.goods.id}}" class="minus fl">-</a>
 			</div>
 		</li>
-		<li class="col07">25.80元</li>
+		<li class="col07"></li>
 		<li class="col08"><a href="javascript:cart_del({{c.id}});">删除</a></li>
 	</ul>
 	{%endfor%}
 
 
-
 	<ul class="settlements">
 		<li class="col01"><input id="check_all" type="checkbox" name="" checked></li>
 		<li class="col02">全选</li>
-		<li class="col03">合计(不含运费)：<span>¥</span><em id="total">42.60</em><br>共计<b class="total_count2">0</b>件商品</li>
-		<li class="col04"><a href="place_order.html">去结算</a></li>
+		<li class="col03">合计(不含运费)：<span>¥</span><em id="total">42.60</em><br>已选<b class="total_count2">0</b>件商品</li>
+		<li class="col04"><a href="" id="order">去结算</a></li>
 	</ul>
 
 {%endblock inner_body%}

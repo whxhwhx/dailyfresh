@@ -5,6 +5,8 @@ from hashlib import sha1
 from models import *
 from df_goods.models import *
 from . import user_decorator
+from django.core.paginator import Paginator
+from df_order.models import *
 
 
 def register(request):
@@ -122,8 +124,16 @@ def info(request):
 
 
 @user_decorator.login
-def order(request):
-    context = {'title': '用户中心', 'page_name': 1}
+def order(request, pindex):
+    uid = request.session['user_id']
+    # 我需要的是订单表和订单详情表，我有uid，关联uid的是订单表，查出的订单不止一个，所以用filter()
+    orders = OrderInfo.objects.filter(user_id=uid).order_by('-odate')
+
+    # 开始分页
+    paginator = Paginator(orders, 3)
+    page = paginator.page(int(pindex))
+
+    context = {'title': '用户中心', 'page_name': 1, 'one': 1, 'page': page, 'paginator': paginator}
     return render(request, 'df_user/user_center_order.html', context)
 
 

@@ -54,7 +54,7 @@
 			</div>
 			<div class="total">总价：<em id="total">16.80元</em></div>
 			<div class="operate_btn">
-				<a href="javascript:;" class="buy_btn">立即购买</a>
+				<a href="javascript:;" class="buy_btn" id="{{good.id}}">立即购买</a>
 				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>
 			</div>
 		</div>
@@ -128,6 +128,12 @@
 			$.get('/cart/add{{good.id}}_'+num+'/', function(data){
 				$('#show_count').text(data.count);
 			});
+		});
+
+		$('.buy_btn').click(function(){
+			len = $(':checked:not(#check_all)').length;
+			var address = '/order/?good_id='+$(this).prop('id');
+			$(this).prop('href', address);
 		});
 	</script>
 

@@ -43,7 +43,6 @@ def add(request, gid, minus, count):
         return redirect('/cart/')
 
 
-
 @user_decorator.login
 def delete(request, cart_id):
     try:
