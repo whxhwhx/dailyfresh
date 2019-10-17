@@ -2,9 +2,9 @@
 
 {%block innermost%}
 	<div class="breadcrumb">
-		<a href="#">全部分类</a>
+		<a href="/">全部分类</a>
 		<span>></span>
-		<a href="#">新鲜水果</a>
+		<a href="#" id="link">{{goodtype.title}}</a>
 		<span>></span>
 		<a href="#">商品详情</a>
 	</div>
@@ -66,11 +66,27 @@
 			</div>
 
 		</div>
-		<div class="add_jump"></div>>
+		<div class="add_jump"></div>
 	</div>
 {%endblock innermost%}
 
 {%block tail%}
+		type = $('#link').text()
+		if(type == '新鲜水果'){
+			$('#link').prop('href', '/#model01');
+		}if(type == '海鲜水产'){
+			$('#link').prop('href', '/#model02');
+		}if(type == '猪肉羊肉'){
+			$('#link').prop('href', '/#model03');
+		}if(type == '禽类蛋品'){
+			$('#link').prop('href', '/#model04');
+		}if(type == '新鲜蔬菜'){
+			$('#link').prop('href', '/#model05');
+		}if(type == '速冻食品'){
+			$('#link').prop('href', '/#model06');
+		}
+
+
 
 		function plus(){
 			var num = parseFloat($('.num_show').val());

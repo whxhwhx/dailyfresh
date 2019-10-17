@@ -38,7 +38,7 @@
 		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
 		<div class="search_con fl">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
-			<input type="button" class="input_btn fr" name="" value="搜索">
+			<input type="button" class="input_btn fr" name="" onclick="search()" value="搜索">
 		</div>
 		<div class="guest_cart fr">
 			<a href="/cart/" class="cart_name fl">我的购物车</a>
@@ -52,7 +52,7 @@
 		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;{{title}}</div>
 		<div class="search_con fr">
 			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
-			<input type="button" class="input_btn fr" name="" value="搜索">
+			<input type="button" class="input_btn fr" onclick="search()" name="" value="搜索">
 		</div>
 </div>
 {%endif%}
@@ -67,8 +67,19 @@
 {%block search%}
 
 	<script type="text/javascript">
-		$('.input_btn').click(function(){
-			alert($(this).prop('type'));
+		function search(){
+			que = $('.input_text').val();
+			if(que==''){
+				alert('输入为空');
+				return;
+			}
+			window.location = '/search/?q='+ que;
+		}
+		$('.input_text').bind('keypress',function(event){
+			if(event.keyCode == '13'){
+				search();
+				return false;
+			}
 		});
 		{%block tail%}{%endblock tail%}
 	</script>

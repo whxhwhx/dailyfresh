@@ -81,7 +81,7 @@ def detail(request, id):
     count = CartInfo.objects.filter(user_id=uid).count()
     news = good.gtype.goodsinfo_set.order_by('-id')[0:2]
     context = {'title': '商品详情', 'guest_cart': 1,
-               'good': good, 'news': news, 'count': count}
+               'good': good, 'news': news, 'count': count, 'goodtype': good.gtype}
     response = render(request, 'df_goods/detail.html', context)
 
     # 记录进最近浏览商品

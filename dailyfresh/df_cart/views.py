@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from df_user import user_decorator
 from models import CartInfo
 from django.http import JsonResponse
+from df_goods.models import GoodsInfo
 
 
 @user_decorator.login
@@ -69,3 +70,13 @@ def edit(request, gid, count):
     cart.save()
 
     return JsonResponse({'number': cart.count})
+
+
+def search(request):
+    try:
+        uid = request.session['user_id']
+    except Exception:
+        uid = 0
+    count = CartInfo.objects.filter(user_id=uid).count()
+
+    return JsonResponse({'count': count})
