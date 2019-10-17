@@ -63,3 +63,14 @@
 {%block inner_body%}{%endblock inner_body%}
 
 {%endblock body%}
+
+{%block search%}
+
+	<script type="text/javascript">
+		$('.input_btn').click(function(){
+			alert($(this).prop('type'));
+		});
+		{%block tail%}{%endblock tail%}
+	</script>
+
+{%endblock search%}

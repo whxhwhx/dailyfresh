@@ -30,8 +30,9 @@ def order(request):
         return render(request, 'df_order/place_order.html', context)
     else:
         good_id = request.GET.get('good_id')
+        count = request.GET.get('count')
         good = GoodsInfo.objects.get(pk=int(good_id))
-        context = {'title': '提交订单', 'page_name': 1, 'is_good': 1, 'user': user, 'good': good}
+        context = {'title': '提交订单', 'page_name': 1, 'is_good': 1, 'user': user, 'good': good, 'count': count}
         return render(request, 'df_order/place_order.html', context)
 
 
@@ -84,6 +85,7 @@ def order_handle(request):
 
     else:
         good_id = request.POST.get('id')
+        buy_count = int(request.POST.get('count'))
         try:
             # 创建订单对象
             order = OrderInfo()
@@ -100,14 +102,14 @@ def order_handle(request):
             detail.order = order
             # 拿到cart对象进行关联
             goods = GoodsInfo.objects.get(pk=int(good_id))
-            if goods.gkucun >= 1:
+            if goods.gkucun >= buy_count:
                 # 库存减去相应的数值
-                goods.gkucun = goods.gkucun - 1
+                goods.gkucun = goods.gkucun - buy_count
                 goods.save()
                 # 完善订单信息
                 detail.goods_id = goods.id
                 detail.price = goods.gprice
-                detail.count = 1
+                detail.count = buy_count
                 detail.save()
             else:
                 transaction.savepoint_rollback(tran_id)

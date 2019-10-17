@@ -1,30 +1,5 @@
 {%extends 'df_goods/de_li_base.html'%}
-{%block head%}
-<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
-<script>
-	function plus(){
-		var num = parseFloat($('.num_show').val());
-		$('.num_show').val(num + 1);
-		$('.num_show').blur();
-	}
 
-	function minus(){
-		var num = parseFloat($('.num_show').val());
-		if(num>1){
-			$('.num_show').val(num - 1);
-			$('.num_show').blur();
-		}
-	}
-	$(function(){
-		$('.num_show').blur(function(){
-			var num = parseFloat($('.num_show').val());
-			var price = parseFloat($('#gprice').text());
-			var total = num * price;
-			$('#total').text(total.toFixed(2)+'元')
-		})
-	});
-</script>
-{%endblock head%}
 {%block innermost%}
 	<div class="breadcrumb">
 		<a href="#">全部分类</a>
@@ -97,7 +72,27 @@
 
 {%block tail%}
 
-	<script type="text/javascript">
+		function plus(){
+			var num = parseFloat($('.num_show').val());
+			$('.num_show').val(num + 1);
+			$('.num_show').blur();
+		}
+
+		function minus(){
+			var num = parseFloat($('.num_show').val());
+			if(num>1){
+				$('.num_show').val(num - 1);
+				$('.num_show').blur();
+			}
+		}
+		$(function(){
+			$('.num_show').blur(function(){
+				var num = parseFloat($('.num_show').val());
+				var price = parseFloat($('#gprice').text());
+				var total = num * price;
+				$('#total').text(total.toFixed(2)+'元')
+			})
+		});
 
 		var $to_x = $('#show_count').offset().top;
 		var $to_y = $('#show_count').offset().left;
@@ -131,10 +126,10 @@
 		});
 
 		$('.buy_btn').click(function(){
-			len = $(':checked:not(#check_all)').length;
-			var address = '/order/?good_id='+$(this).prop('id');
+			var count = $('.num_show').val();
+			var address = '/order/?good_id='+$(this).prop('id')+'&count='+count;
 			$(this).prop('href', address);
 		});
-	</script>
+
 
 {%endblock tail%}

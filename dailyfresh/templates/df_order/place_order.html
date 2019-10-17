@@ -56,7 +56,7 @@
 				<li class="col03">{{good.gtitle}}</li>
 				<li class="col04">{{good.gunit}}</li>
 				<li class="col05">{{good.gprice}}元</li>
-				<li class="col06">1</li>
+				<li class="col06">{{count}}</li>
 				<li class="col07">25.80元</li>
 			</ul>
 		{%endif%}
@@ -75,10 +75,8 @@
 
 	<div class="order_submit clearfix">
 		<a href="javascript:;" id="order_btn">提交订单</a>
-	</div>	
-{%endblock inner_body%}
+	</div>
 
-{%block tail%}
 	<div class="popup_con">
 		<div class="popup">
 			<p>订单提交成功！</p>
@@ -86,8 +84,11 @@
 
 		<div class="mask"></div>
 	</div>
-	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
-	<script type="text/javascript">
+{%endblock inner_body%}
+
+{%block tail%}
+
+
 		total_haha = 0;
 		function total(){
 			total1 = 0;
@@ -157,12 +158,11 @@
 			{%if is_good == 1%}
 				good_id = $('.goods_list_td').prop('id');
 				alert(good_id);
-				$.post("/order/order_handle/", {id: good_id, flag: 1, total: total_haha}, function(data){
+				$.post("/order/order_handle/", {id: good_id, flag: 1, total: total_haha, count:{{count}}}, function(data){
 					alert(data.success);
 				});
 			{%endif%}
 		});
 
-	</script>
 {%endblock tail%}
 
