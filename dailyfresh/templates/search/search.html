@@ -1,21 +1,8 @@
 {%extends 'df_goods/de_li_base.html'%}
-{%block special%}
-<div class="search_bar clearfix">
-		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
-		<div class="search_con fl">
-			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
-			<input type="button" class="input_btn fr" onclick="search()" name="" value="搜索">
-		</div>
-		<div class="guest_cart fr">
-			<a href="/cart/" class="cart_name fl">我的购物车</a>
-			<div class="goods_count fl" id="show_count">{{count}}</div>
-		</div>
-</div>
-{%endblock special%}
 {%block innermost%}
 
 	<div class="breadcrumb">
-		<a href="#">全部分类</a>
+		<a href="/">全部分类</a>
 		<span>></span>
 		<a href="#">搜索</a>
 	</div>
@@ -77,10 +64,6 @@
 {%endblock innermost%}
 
 {%block tail%}
-		$.get('/cart/search/',function(data){
-			$('#show_count').text(data.count);
-			$('title').text('天天生鲜-搜索');
-		});
 
 		var $to_x = $('#show_count').offset().top;
 		var $to_y = $('#show_count').offset().left;
