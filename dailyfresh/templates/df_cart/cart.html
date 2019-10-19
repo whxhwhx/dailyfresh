@@ -13,7 +13,7 @@
 	{%for c in carts%}
 	<ul class="cart_list_td clearfix" id="{{c.id}}">
 		<li class="col01"><input type="checkbox" name="" checked=""></li>
-		<li class="col02"><img src="/static/{{c.goods.gpic}}/"></li>
+		<li class="col02"><img src="/static/{{c.goods.gpic}}"></li>
 		<li class="col03">{{c.goods.gtitle}}<br><em>{{c.goods.gprice}}元/{{c.goods.gunit}}</em></li>
 		<li class="col04">{{c.goods.gunit}}</li>
 		<li class="col05">{{c.goods.gprice}}元</li>

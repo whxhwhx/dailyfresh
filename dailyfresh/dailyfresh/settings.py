@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'kl*rht=nhx@1e@=!y_nzd@wre--%2ieu0el0_-+1p2m%fokkpn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -111,10 +111,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
+# 这是再manage时用的，部署的时候就不会从这里拿了,
 STATIC_URL = '/static/'
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR, 'static')
 ]
+# 收集项目静态文件到nginx,需要指定一个路径(告诉它收集到哪里去)
+STATIC_ROOT = '/var/www/dailyfresh/static/'
+
 # 这个是在用manage时用的
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 # 在部署服务器时，会采集静态文件到nginx, 部署之后上传的文件不应该再放到这里来，应该放到服务器去

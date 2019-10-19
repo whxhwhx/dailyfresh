@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="goods_detail_con clearfix">
-		<div class="goods_detail_pic fl"><img src="/static/{{good.gpic}}/"></div>
+		<div class="goods_detail_pic fl"><img src="/static/{{good.gpic}}"></div>
 
 		<div class="goods_detail_list fr">
 			<h3>{{good.gtitle}}</h3>
@@ -42,7 +42,7 @@
 				<ul>
                     {%for g in news%}
 					<li>
-						<a href="/{{g.id}}/"><img src="/static/{{g.gpic}}/"></a>
+						<a href="/{{g.id}}/"><img src="/static/{{g.gpic}}"></a>
 						<h4><a href="/{{g.id}}/">{{g.gtitle}}</a></h4>
 						<div class="prize">￥{{g.gprice}}</div>
 					</li>
